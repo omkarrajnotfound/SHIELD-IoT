@@ -1,0 +1,269 @@
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-001
+  Timestamp   : 2026-11-02 14:15:34
+  Alert Type  : BACKDOOR (Confidence: 100.0%)
+  Threat Desc : Unauthorized Persistent Remote Access
+  MITRE ATT&CK: T1059 (Command and Scripting Interpreter)
+  Risk Level  : ★★★★★ CRITICAL
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. MIN_TTL = 128.0 hops
+       -> Elevated TTL indicates local subnet or internal lateral propagation.
+          Contribution: +13.26 toward BACKDOOR
+
+    2. L7_PROTO = 131.0 protocol id
+       -> Unrecognized or non-standard application layer protocol identifier (131) on transport port.
+          Contribution: +1.93 toward BACKDOOR
+
+    3. TCP_WIN_MAX_IN = 8192.0 bytes
+       -> TCP receive window abnormally expanded (8192 bytes) — indicates bulk encrypted payload delivery or data exfiltration burst.
+          Contribution: +1.90 toward BACKDOOR
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] Terminate suspect process PID and sever persistent outbound reverse shell socket.
+    [X] Quarantine affected host and inspect persistence hooks (cron, systemd, Windows registry).
+    [X] Invalidate all active Kerberos/SSH credentials associated with the compromised host.
+    [V] Review bastion and lateral jump logs for post-exploitation reconnaissance.
+=================================================================
+
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-002
+  Timestamp   : 2026-11-02 14:20:34
+  Alert Type  : DDOS (Confidence: 93.3%)
+  Threat Desc : Distributed Denial of Service (Volumetric Flood)
+  MITRE ATT&CK: T1498 (Network Denial of Service)
+  Risk Level  : ★★★★☆ HIGH
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. SHORTEST_FLOW_PKT = 52.0 bytes
+       -> Shortest packet contains substantial payload (52 bytes), anomalous for normal handshakes.
+          Contribution: +1.28 toward DDOS
+
+    2. TCP_WIN_MAX_IN = 29200.0 bytes
+       -> TCP receive window abnormally expanded (29200 bytes) — indicates bulk encrypted payload delivery or data exfiltration burst.
+          Contribution: +1.01 toward DDOS
+
+    3. MAX_IP_PKT_LEN = 60.0 bytes
+       -> Maximum packet size reached MTU limit (60 bytes) — consistent with bulk data dumping or large exploit payload transfer.
+          Contribution: +0.94 toward DDOS
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] Engage upstream ISP BGP Flowspec drop rules to discard volumetric attack traffic.
+    [X] Apply TCP SYN Proxy / SYN Cookies at perimeter edge firewall / load balancer.
+    [X] Rate-limit offending CIDR prefix on border router ingress interface.
+    [V] Divert edge ingress traffic through cloud DDoS scrubbing center.
+=================================================================
+
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-003
+  Timestamp   : 2026-11-02 15:25:34
+  Alert Type  : DOS (Confidence: 100.0%)
+  Threat Desc : Denial of Service (Resource Starvation)
+  MITRE ATT&CK: T1499 (Endpoint Denial of Service)
+  Risk Level  : ★★★★☆ HIGH
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. TCP_WIN_MAX_IN = 74.0 bytes
+       -> Restricted TCP receive window (74 bytes) — consistent with resource exhaustion or SYN scanning.
+          Contribution: +7.26 toward DOS
+
+    2. SRC_TO_DST_AVG_THROUGHPUT = 21984000.0 bps
+       -> Elevated outbound throughput (21,984,000 bps) indicates volumetric exfiltration or intensive injection traffic.
+          Contribution: +3.12 toward DOS
+
+    3. MAX_IP_PKT_LEN = 40.0 bytes
+       -> Uniformly diminutive packets (40 bytes) indicate reconnaissance probing or denial-of-service packet storm.
+          Contribution: +1.76 toward DOS
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] Throttle ingress connection rate from source subnet on local firewall.
+    [X] Adjust server TCP keepalive and connection timeout parameters to free orphaned sockets.
+    [X] Implement temporary drop ACL on offending host IP address.
+    [V] Verify web server connection pool health and activate standby service node.
+=================================================================
+
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-004
+  Timestamp   : 2026-11-02 15:30:34
+  Alert Type  : INJECTION (Confidence: 96.3%)
+  Threat Desc : Application Layer Code/Query Injection
+  MITRE ATT&CK: T1055 (Process/Query Injection)
+  Risk Level  : ★★★★☆ HIGH
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. MAX_IP_PKT_LEN = 564.0 bytes
+       -> Maximum packet size reached MTU limit (564 bytes) — consistent with bulk data dumping or large exploit payload transfer.
+          Contribution: +2.78 toward INJECTION
+
+    2. TCP_WIN_MAX_OUT = 65535.0 bytes
+       -> Large outbound TCP window (65535 bytes) indicates sustained high-throughput remote egress.
+          Contribution: +1.89 toward INJECTION
+
+    3. L7_PROTO = 7.0 protocol id
+       -> Unrecognized or non-standard application layer protocol identifier (7) on transport port.
+          Contribution: +0.46 toward INJECTION
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] Block client IP address at Web Application Firewall (WAF) layer.
+    [X] Inspect web server access logs for SQLi / command syntax in URL and POST parameters.
+    [X] Review backend database query logs for unauthorized schema modification or data extraction.
+    [V] Verify parameterized query compliance and patch vulnerable web service endpoint.
+=================================================================
+
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-005
+  Timestamp   : 2026-11-02 15:35:34
+  Alert Type  : MITM (Confidence: 99.9%)
+  Threat Desc : Man-In-The-Middle / Session Interception
+  MITRE ATT&CK: T1557 (Adversary-in-the-Middle)
+  Risk Level  : ★★★★☆ HIGH
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. MAX_IP_PKT_LEN = 258.0 bytes
+       -> Maximum packet size reached MTU limit (258 bytes) — consistent with bulk data dumping or large exploit payload transfer.
+          Contribution: +3.68 toward MITM
+
+    2. MIN_IP_PKT_LEN = 70.0 bytes
+       -> Abnormally elevated minimum packet length (70 bytes) — packets carry continuous payload with no bare ACKs.
+          Contribution: +2.57 toward MITM
+
+    3. DNS_TTL_ANSWER = 30.0 seconds
+       -> Unusually high DNS TTL suggests attempt to lock in compromised name resolution.
+          Contribution: +1.44 toward MITM
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] Flush ARP cache on local subnet default gateway and verify static gateway MAC bindings.
+    [X] Enforce Dynamic ARP Inspection (DAI) and DHCP Snooping on edge access switches.
+    [X] Invalidate active TLS/OAuth web sessions and force client re-authentication.
+    [V] Inspect subnet routing tables for illegitimate ICMP redirect messages.
+=================================================================
+
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-006
+  Timestamp   : 2026-11-02 16:40:34
+  Alert Type  : PASSWORD (Confidence: 99.8%)
+  Threat Desc : Credential Brute-Force / Password Spraying
+  MITRE ATT&CK: T1110 (Brute Force)
+  Risk Level  : ★★★☆☆ MEDIUM
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. TCP_WIN_MAX_OUT = 65535.0 bytes
+       -> Large outbound TCP window (65535 bytes) indicates sustained high-throughput remote egress.
+          Contribution: +3.61 toward PASSWORD
+
+    2. L7_PROTO = 7.0 protocol id
+       -> Unrecognized or non-standard application layer protocol identifier (7) on transport port.
+          Contribution: +3.09 toward PASSWORD
+
+    3. FLOW_DURATION_MILLISECONDS = 100.0 ms
+       -> Prolonged flow duration (100.0 ms) indicates persistent reverse shell or interactive session tunneling.
+          Contribution: +0.98 toward PASSWORD
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] Temporarily lock target account and enforce exponential authentication backoff.
+    [X] Block source IP from SSH, Telnet, FTP, and RDP edge listener ports.
+    [X] Require immediate Multi-Factor Authentication (MFA) challenge upon next login.
+    [V] Audit authentication logs for distributed botnet credential stuffing patterns.
+=================================================================
+
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-007
+  Timestamp   : 2026-11-02 16:45:34
+  Alert Type  : RANSOMWARE (Confidence: 100.0%)
+  Threat Desc : Cryptographic Endpoint Hostage Attack
+  MITRE ATT&CK: T1486 (Data Encrypted for Impact)
+  Risk Level  : ★★★★★ CRITICAL
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. TCP_FLAGS = 0x1F
+       -> Anomalous TCP flag combination (bitmap=31) — non-standard flag states (PSH/URG/RST) used to evade basic stateful filters.
+          Contribution: +5.12 toward RANSOMWARE
+
+    2. TCP_WIN_MAX_OUT = 8192.0 bytes
+       -> Large outbound TCP window (8192 bytes) indicates sustained high-throughput remote egress.
+          Contribution: +4.07 toward RANSOMWARE
+
+    3. CLIENT_TCP_FLAGS = 0x1B
+       -> Client pushed abnormal TCP control flags (27) — typical of custom exploit scripts or evasion frameworks.
+          Contribution: +3.74 toward RANSOMWARE
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] IMMEDIATELY isolate endpoint from local VLAN/WLAN to halt lateral encryption spread.
+    [X] Block outbound DNS queries and perimeter C2 destination IP addresses.
+    [X] Capture volatile memory (RAM) dump immediately for cryptographic key extraction.
+    [V] Verify backup storage immutability and air-gap integrity before initiating node remediation.
+=================================================================
+
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-008
+  Timestamp   : 2026-11-02 16:50:34
+  Alert Type  : SCANNING (Confidence: 99.9%)
+  Threat Desc : Network Reconnaissance / Port Scanning
+  MITRE ATT&CK: T1046 (Network Service Discovery)
+  Risk Level  : ★★★☆☆ MEDIUM
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. MAX_IP_PKT_LEN = 48.0 bytes
+       -> Maximum packet size reached MTU limit (48 bytes) — consistent with bulk data dumping or large exploit payload transfer.
+          Contribution: +4.83 toward SCANNING
+
+    2. MIN_IP_PKT_LEN = 0.0 bytes
+       -> Minimal header-only packet size (0 bytes) — indicates probe or ACK-less synchronization attempt.
+          Contribution: +1.13 toward SCANNING
+
+    3. TCP_WIN_MAX_IN = 4096.0 bytes
+       -> TCP receive window abnormally expanded (4096 bytes) — indicates bulk encrypted payload delivery or data exfiltration burst.
+          Contribution: +0.68 toward SCANNING
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] Add scanning source IP to automatic 24-hour firewall drop list.
+    [X] Verify perimeter port exposure and disable unused open ports (e.g., Telnet, SMB).
+    [X] Enable port-scan threshold alerting on local Network Intrusion Detection System.
+    [V] Correlate scanning IP against external Threat Intelligence feeds (AbuseIPDB, AlienVault).
+=================================================================
+
+=================================================================
+           REAL-TIME SECURITY ALERT REPORT (AI-SOC)
+=================================================================
+  Alert ID    : #ALT-20261102-009
+  Timestamp   : 2026-11-02 17:55:34
+  Alert Type  : XSS (Confidence: 95.0%)
+  Threat Desc : Cross-Site Scripting (Client-Side Injection)
+  MITRE ATT&CK: T1189 (Drive-by Compromise)
+  Risk Level  : ★★★☆☆ MEDIUM
+
+  PRIMARY TRIGGER REASONS (SHAP EXPLAINABILITY RATIONALE):
+    1. MAX_IP_PKT_LEN = 65.0 bytes
+       -> Maximum packet size reached MTU limit (65 bytes) — consistent with bulk data dumping or large exploit payload transfer.
+          Contribution: +2.35 toward XSS
+
+    2. SRC_TO_DST_AVG_THROUGHPUT = 520000.0 bps
+       -> Elevated outbound throughput (520,000 bps) indicates volumetric exfiltration or intensive injection traffic.
+          Contribution: +0.91 toward XSS
+
+    3. MIN_IP_PKT_LEN = 65.0 bytes
+       -> Abnormally elevated minimum packet length (65 bytes) — packets carry continuous payload with no bare ACKs.
+          Contribution: +0.74 toward XSS
+
+  RECOMMENDED ACTIONS (INCIDENT RESPONSE PLAYBOOK):
+    [X] Invalidate active session tokens associated with vulnerable application paths.
+    [X] Implement HTML entity encoding and context-aware escaping on reflective form inputs.
+    [X] Enforce strict Content Security Policy (CSP) header: default-src 'self'.
+    [V] Inspect web application response payloads for reflected script fragments.
+=================================================================

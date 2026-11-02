@@ -69,9 +69,15 @@ def load_and_preprocess(csv_path=None, test_size=0.2, random_state=42):
         print(f"Multi-class classes found: {list(le.classes_)}")
 
     stratify_target = y_multi if y_multi is not None else y_binary
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y_binary, test_size=test_size, random_state=random_state, stratify=stratify_target
-    )
+    if y_multi is not None:
+        X_train, X_test, y_train, y_test, y_train_multi, y_test_multi = train_test_split(
+            X, y_binary, y_multi, test_size=test_size, random_state=random_state, stratify=stratify_target
+        )
+    else:
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y_binary, test_size=test_size, random_state=random_state, stratify=stratify_target
+        )
+        y_train_multi, y_test_multi = None, None
 
     print(f"Training set: {X_train.shape[0]:,} samples x {X_train.shape[1]} features")
     print(f"Testing set:  {X_test.shape[0]:,} samples x {X_test.shape[1]} features")
@@ -95,6 +101,10 @@ def load_and_preprocess(csv_path=None, test_size=0.2, random_state=42):
     # Save artifacts
     joblib.dump(scaler, os.path.join(PROCESSED_DIR, "robust_scaler.pkl"))
     joblib.dump((X_train_df, X_test_df, y_train, y_test), os.path.join(PROCESSED_DIR, "train_test_data.pkl"))
+    if y_train_multi is not None:
+        y_train_multi_s = pd.Series(y_train_multi, index=X_train.index)
+        y_test_multi_s = pd.Series(y_test_multi, index=X_test.index)
+        joblib.dump((y_train_multi_s, y_test_multi_s), os.path.join(PROCESSED_DIR, "train_test_multi_targets.pkl"))
     print("Preprocessing completed and numerical bounds verified!")
 
     return X_train_df, X_test_df, y_train, y_test

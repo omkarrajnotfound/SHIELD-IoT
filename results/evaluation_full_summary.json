@@ -1,0 +1,59 @@
+{
+  "evaluation_phase": "Phase D: Full Evaluation Suite",
+  "dataset": "NF-ToN-IoT-v2 (160,304 Test Flows)",
+  "features_count": 14,
+  "selected_features": [
+    "MAX_IP_PKT_LEN",
+    "TCP_WIN_MAX_IN",
+    "L7_PROTO",
+    "DST_TO_SRC_AVG_THROUGHPUT",
+    "SRC_TO_DST_AVG_THROUGHPUT",
+    "FLOW_DURATION_MILLISECONDS",
+    "MIN_IP_PKT_LEN",
+    "DNS_TTL_ANSWER",
+    "TCP_FLAGS",
+    "SERVER_TCP_FLAGS",
+    "TCP_WIN_MAX_OUT",
+    "SHORTEST_FLOW_PKT",
+    "CLIENT_TCP_FLAGS",
+    "MIN_TTL"
+  ],
+  "overall_performance": {
+    "accuracy_pct": 96.63,
+    "macro_f1_pct": 85.53,
+    "weighted_f1_pct": 96.75,
+    "macro_auc_roc": 0.9925,
+    "micro_auc_roc": 0.9992,
+    "inference_latency_ms_per_1k": 17.937
+  },
+  "false_alarm_analysis": {
+    "benign_total_flows": 57860,
+    "benign_false_alarms": 1050,
+    "benign_false_positive_rate_pct": 1.81,
+    "attack_total_flows": 102444,
+    "attack_detection_rate_pct": 99.73,
+    "attack_false_negative_rate_pct": 0.27
+  },
+  "stealth_attack_detection": {
+    "ransomware": {
+      "samples": 35,
+      "recall_pct": 85.71,
+      "precision_pct": 96.77,
+      "f1_pct": 90.91,
+      "auc": 0.9714
+    },
+    "backdoor": {
+      "samples": 161,
+      "recall_pct": 97.52,
+      "precision_pct": 98.12,
+      "f1_pct": 97.82,
+      "auc": 0.9984
+    },
+    "mitm": {
+      "samples": 68,
+      "recall_pct": 32.35,
+      "f1_pct": 8.29,
+      "auc": 0.9697
+    }
+  }
+}

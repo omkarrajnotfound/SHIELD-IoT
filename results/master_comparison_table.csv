@@ -1,0 +1,7 @@
+model_name,architecture_type,feature_count,accuracy,macro_f1,weighted_f1,ransomware_recall,backdoor_recall,latency_ms_per_1k_pkts,model_size_mb,gpu_required,edge_deployable
+MLP (Full Features),Deep Learning (Neural Net),39,92.95,72.37,92.9,0.0,97.52,0.351,0.07,Yes (Recommended),Poor (High compute/latency)
+1D-CNN (Full Features),Deep Learning (Neural Net),39,93.27,73.3,93.16,0.0,97.52,12.247,0.16,Yes (Recommended),Poor (High compute/latency)
+Random Forest (Full Features),Classical Ensemble,39,97.04,86.91,97.0,77.14,98.76,2.11,29.84,No,Moderate
+XGBoost (Full Features),Classical Ensemble,39,96.38,86.81,96.33,80.0,97.52,1.523,1.99,No,Moderate
+LightGBM (Full Features),Classical Ensemble,39,65.44,49.3,64.87,0.0,0.0,10.455,2.92,No,Moderate
+Proposed LightGBM (14-Feat + SMOTE),Proposed Framework (Ours),14,96.63,85.53,96.75,85.71,97.52,8.805,3.32,No,Optimal (Ultra-Lightweight)

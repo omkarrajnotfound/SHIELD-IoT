@@ -1,0 +1,59 @@
+{
+  "phase": "Phase A: Rare Attack Fix",
+  "features_count": 14,
+  "selected_features": [
+    "MAX_IP_PKT_LEN",
+    "TCP_WIN_MAX_IN",
+    "L7_PROTO",
+    "DST_TO_SRC_AVG_THROUGHPUT",
+    "SRC_TO_DST_AVG_THROUGHPUT",
+    "FLOW_DURATION_MILLISECONDS",
+    "MIN_IP_PKT_LEN",
+    "DNS_TTL_ANSWER",
+    "TCP_FLAGS",
+    "SERVER_TCP_FLAGS",
+    "TCP_WIN_MAX_OUT",
+    "SHORTEST_FLOW_PKT",
+    "CLIENT_TCP_FLAGS",
+    "MIN_TTL"
+  ],
+  "oversample_strategy": {
+    "backdoor": 4000,
+    "mitm": 3500,
+    "ransomware": 3000
+  },
+  "baseline_model": {
+    "name": "Standard LightGBM (14-Feat, No SMOTE)",
+    "accuracy": 76.66,
+    "macro_f1": 56.72,
+    "weighted_f1": 76.28,
+    "latency_ms_per_1k": 9.9622,
+    "train_time_sec": 21.72
+  },
+  "proposed_model": {
+    "name": "Borderline-SMOTE + Cost-Sensitive LightGBM (14-Feat)",
+    "accuracy": 96.63,
+    "macro_f1": 85.53,
+    "weighted_f1": 96.75,
+    "latency_ms_per_1k": 8.9839,
+    "train_time_sec": 25.53,
+    "model_size_mb": 3.32
+  },
+  "minority_attack_recall": {
+    "ransomware": {
+      "before": 74.29,
+      "after": 85.71,
+      "f1_after": 90.91
+    },
+    "backdoor": {
+      "before": 0.0,
+      "after": 97.52,
+      "f1_after": 97.82
+    },
+    "mitm": {
+      "before": 0.0,
+      "after": 32.35,
+      "f1_after": 8.29
+    }
+  }
+}

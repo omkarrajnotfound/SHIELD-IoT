@@ -1,0 +1,385 @@
+{
+  "generator": "AI-SOC SHAP-to-Rule Automated Engine",
+  "timestamp_generated": "2026-11-02T20:51:53.255958",
+  "total_alerts": 9,
+  "alerts": [
+    {
+      "alert_id": "#ALT-20261102-001",
+      "timestamp": "2026-11-02 14:15:34",
+      "attack_type": "backdoor",
+      "threat_category": "Unauthorized Persistent Remote Access",
+      "mitre_technique": "T1059 (Command and Scripting Interpreter)",
+      "confidence_pct": 100.0,
+      "severity": "CRITICAL",
+      "risk_level": "\u2605\u2605\u2605\u2605\u2605 CRITICAL",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "MIN_TTL",
+          "unscaled_value": 128.0,
+          "unit": "hops",
+          "shap_contribution": 13.26,
+          "rationale": "Elevated TTL indicates local subnet or internal lateral propagation."
+        },
+        {
+          "rank": 2,
+          "feature": "L7_PROTO",
+          "unscaled_value": 131.0,
+          "unit": "protocol id",
+          "shap_contribution": 1.93,
+          "rationale": "Unrecognized or non-standard application layer protocol identifier (131) on transport port."
+        },
+        {
+          "rank": 3,
+          "feature": "TCP_WIN_MAX_IN",
+          "unscaled_value": 8192.0,
+          "unit": "bytes",
+          "shap_contribution": 1.9,
+          "rationale": "TCP receive window abnormally expanded (8192 bytes) \u2014 indicates bulk encrypted payload delivery or data exfiltration burst."
+        }
+      ],
+      "recommended_actions": [
+        "[X] Terminate suspect process PID and sever persistent outbound reverse shell socket.",
+        "[X] Quarantine affected host and inspect persistence hooks (cron, systemd, Windows registry).",
+        "[X] Invalidate all active Kerberos/SSH credentials associated with the compromised host.",
+        "[V] Review bastion and lateral jump logs for post-exploitation reconnaissance."
+      ]
+    },
+    {
+      "alert_id": "#ALT-20261102-002",
+      "timestamp": "2026-11-02 14:20:34",
+      "attack_type": "ddos",
+      "threat_category": "Distributed Denial of Service (Volumetric Flood)",
+      "mitre_technique": "T1498 (Network Denial of Service)",
+      "confidence_pct": 93.32,
+      "severity": "HIGH",
+      "risk_level": "\u2605\u2605\u2605\u2605\u2606 HIGH",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "SHORTEST_FLOW_PKT",
+          "unscaled_value": 52.0,
+          "unit": "bytes",
+          "shap_contribution": 1.28,
+          "rationale": "Shortest packet contains substantial payload (52 bytes), anomalous for normal handshakes."
+        },
+        {
+          "rank": 2,
+          "feature": "TCP_WIN_MAX_IN",
+          "unscaled_value": 29200.0,
+          "unit": "bytes",
+          "shap_contribution": 1.01,
+          "rationale": "TCP receive window abnormally expanded (29200 bytes) \u2014 indicates bulk encrypted payload delivery or data exfiltration burst."
+        },
+        {
+          "rank": 3,
+          "feature": "MAX_IP_PKT_LEN",
+          "unscaled_value": 60.0,
+          "unit": "bytes",
+          "shap_contribution": 0.94,
+          "rationale": "Maximum packet size reached MTU limit (60 bytes) \u2014 consistent with bulk data dumping or large exploit payload transfer."
+        }
+      ],
+      "recommended_actions": [
+        "[X] Engage upstream ISP BGP Flowspec drop rules to discard volumetric attack traffic.",
+        "[X] Apply TCP SYN Proxy / SYN Cookies at perimeter edge firewall / load balancer.",
+        "[X] Rate-limit offending CIDR prefix on border router ingress interface.",
+        "[V] Divert edge ingress traffic through cloud DDoS scrubbing center."
+      ]
+    },
+    {
+      "alert_id": "#ALT-20261102-003",
+      "timestamp": "2026-11-02 15:25:34",
+      "attack_type": "dos",
+      "threat_category": "Denial of Service (Resource Starvation)",
+      "mitre_technique": "T1499 (Endpoint Denial of Service)",
+      "confidence_pct": 99.99,
+      "severity": "HIGH",
+      "risk_level": "\u2605\u2605\u2605\u2605\u2606 HIGH",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "TCP_WIN_MAX_IN",
+          "unscaled_value": 74.0,
+          "unit": "bytes",
+          "shap_contribution": 7.26,
+          "rationale": "Restricted TCP receive window (74 bytes) \u2014 consistent with resource exhaustion or SYN scanning."
+        },
+        {
+          "rank": 2,
+          "feature": "SRC_TO_DST_AVG_THROUGHPUT",
+          "unscaled_value": 21984000.0,
+          "unit": "bps",
+          "shap_contribution": 3.12,
+          "rationale": "Elevated outbound throughput (21,984,000 bps) indicates volumetric exfiltration or intensive injection traffic."
+        },
+        {
+          "rank": 3,
+          "feature": "MAX_IP_PKT_LEN",
+          "unscaled_value": 40.0,
+          "unit": "bytes",
+          "shap_contribution": 1.76,
+          "rationale": "Uniformly diminutive packets (40 bytes) indicate reconnaissance probing or denial-of-service packet storm."
+        }
+      ],
+      "recommended_actions": [
+        "[X] Throttle ingress connection rate from source subnet on local firewall.",
+        "[X] Adjust server TCP keepalive and connection timeout parameters to free orphaned sockets.",
+        "[X] Implement temporary drop ACL on offending host IP address.",
+        "[V] Verify web server connection pool health and activate standby service node."
+      ]
+    },
+    {
+      "alert_id": "#ALT-20261102-004",
+      "timestamp": "2026-11-02 15:30:34",
+      "attack_type": "injection",
+      "threat_category": "Application Layer Code/Query Injection",
+      "mitre_technique": "T1055 (Process/Query Injection)",
+      "confidence_pct": 96.35,
+      "severity": "HIGH",
+      "risk_level": "\u2605\u2605\u2605\u2605\u2606 HIGH",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "MAX_IP_PKT_LEN",
+          "unscaled_value": 564.0,
+          "unit": "bytes",
+          "shap_contribution": 2.78,
+          "rationale": "Maximum packet size reached MTU limit (564 bytes) \u2014 consistent with bulk data dumping or large exploit payload transfer."
+        },
+        {
+          "rank": 2,
+          "feature": "TCP_WIN_MAX_OUT",
+          "unscaled_value": 65535.00390625,
+          "unit": "bytes",
+          "shap_contribution": 1.89,
+          "rationale": "Large outbound TCP window (65535 bytes) indicates sustained high-throughput remote egress."
+        },
+        {
+          "rank": 3,
+          "feature": "L7_PROTO",
+          "unscaled_value": 7.0,
+          "unit": "protocol id",
+          "shap_contribution": 0.46,
+          "rationale": "Unrecognized or non-standard application layer protocol identifier (7) on transport port."
+        }
+      ],
+      "recommended_actions": [
+        "[X] Block client IP address at Web Application Firewall (WAF) layer.",
+        "[X] Inspect web server access logs for SQLi / command syntax in URL and POST parameters.",
+        "[X] Review backend database query logs for unauthorized schema modification or data extraction.",
+        "[V] Verify parameterized query compliance and patch vulnerable web service endpoint."
+      ]
+    },
+    {
+      "alert_id": "#ALT-20261102-005",
+      "timestamp": "2026-11-02 15:35:34",
+      "attack_type": "mitm",
+      "threat_category": "Man-In-The-Middle / Session Interception",
+      "mitre_technique": "T1557 (Adversary-in-the-Middle)",
+      "confidence_pct": 99.94,
+      "severity": "HIGH",
+      "risk_level": "\u2605\u2605\u2605\u2605\u2606 HIGH",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "MAX_IP_PKT_LEN",
+          "unscaled_value": 258.0,
+          "unit": "bytes",
+          "shap_contribution": 3.68,
+          "rationale": "Maximum packet size reached MTU limit (258 bytes) \u2014 consistent with bulk data dumping or large exploit payload transfer."
+        },
+        {
+          "rank": 2,
+          "feature": "MIN_IP_PKT_LEN",
+          "unscaled_value": 70.0,
+          "unit": "bytes",
+          "shap_contribution": 2.57,
+          "rationale": "Abnormally elevated minimum packet length (70 bytes) \u2014 packets carry continuous payload with no bare ACKs."
+        },
+        {
+          "rank": 3,
+          "feature": "DNS_TTL_ANSWER",
+          "unscaled_value": 30.0,
+          "unit": "seconds",
+          "shap_contribution": 1.44,
+          "rationale": "Unusually high DNS TTL suggests attempt to lock in compromised name resolution."
+        }
+      ],
+      "recommended_actions": [
+        "[X] Flush ARP cache on local subnet default gateway and verify static gateway MAC bindings.",
+        "[X] Enforce Dynamic ARP Inspection (DAI) and DHCP Snooping on edge access switches.",
+        "[X] Invalidate active TLS/OAuth web sessions and force client re-authentication.",
+        "[V] Inspect subnet routing tables for illegitimate ICMP redirect messages."
+      ]
+    },
+    {
+      "alert_id": "#ALT-20261102-006",
+      "timestamp": "2026-11-02 16:40:34",
+      "attack_type": "password",
+      "threat_category": "Credential Brute-Force / Password Spraying",
+      "mitre_technique": "T1110 (Brute Force)",
+      "confidence_pct": 99.83,
+      "severity": "MEDIUM",
+      "risk_level": "\u2605\u2605\u2605\u2606\u2606 MEDIUM",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "TCP_WIN_MAX_OUT",
+          "unscaled_value": 65535.00390625,
+          "unit": "bytes",
+          "shap_contribution": 3.61,
+          "rationale": "Large outbound TCP window (65535 bytes) indicates sustained high-throughput remote egress."
+        },
+        {
+          "rank": 2,
+          "feature": "L7_PROTO",
+          "unscaled_value": 7.0,
+          "unit": "protocol id",
+          "shap_contribution": 3.09,
+          "rationale": "Unrecognized or non-standard application layer protocol identifier (7) on transport port."
+        },
+        {
+          "rank": 3,
+          "feature": "FLOW_DURATION_MILLISECONDS",
+          "unscaled_value": 100.0,
+          "unit": "ms",
+          "shap_contribution": 0.98,
+          "rationale": "Prolonged flow duration (100.0 ms) indicates persistent reverse shell or interactive session tunneling."
+        }
+      ],
+      "recommended_actions": [
+        "[X] Temporarily lock target account and enforce exponential authentication backoff.",
+        "[X] Block source IP from SSH, Telnet, FTP, and RDP edge listener ports.",
+        "[X] Require immediate Multi-Factor Authentication (MFA) challenge upon next login.",
+        "[V] Audit authentication logs for distributed botnet credential stuffing patterns."
+      ]
+    },
+    {
+      "alert_id": "#ALT-20261102-007",
+      "timestamp": "2026-11-02 16:45:34",
+      "attack_type": "ransomware",
+      "threat_category": "Cryptographic Endpoint Hostage Attack",
+      "mitre_technique": "T1486 (Data Encrypted for Impact)",
+      "confidence_pct": 100.0,
+      "severity": "CRITICAL",
+      "risk_level": "\u2605\u2605\u2605\u2605\u2605 CRITICAL",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "TCP_FLAGS",
+          "unscaled_value": 31.0,
+          "unit": "bitmap",
+          "shap_contribution": 5.12,
+          "rationale": "Anomalous TCP flag combination (bitmap=31) \u2014 non-standard flag states (PSH/URG/RST) used to evade basic stateful filters."
+        },
+        {
+          "rank": 2,
+          "feature": "TCP_WIN_MAX_OUT",
+          "unscaled_value": 8191.99951171875,
+          "unit": "bytes",
+          "shap_contribution": 4.07,
+          "rationale": "Large outbound TCP window (8192 bytes) indicates sustained high-throughput remote egress."
+        },
+        {
+          "rank": 3,
+          "feature": "CLIENT_TCP_FLAGS",
+          "unscaled_value": 27.0,
+          "unit": "bitmap",
+          "shap_contribution": 3.74,
+          "rationale": "Client pushed abnormal TCP control flags (27) \u2014 typical of custom exploit scripts or evasion frameworks."
+        }
+      ],
+      "recommended_actions": [
+        "[X] IMMEDIATELY isolate endpoint from local VLAN/WLAN to halt lateral encryption spread.",
+        "[X] Block outbound DNS queries and perimeter C2 destination IP addresses.",
+        "[X] Capture volatile memory (RAM) dump immediately for cryptographic key extraction.",
+        "[V] Verify backup storage immutability and air-gap integrity before initiating node remediation."
+      ]
+    },
+    {
+      "alert_id": "#ALT-20261102-008",
+      "timestamp": "2026-11-02 16:50:34",
+      "attack_type": "scanning",
+      "threat_category": "Network Reconnaissance / Port Scanning",
+      "mitre_technique": "T1046 (Network Service Discovery)",
+      "confidence_pct": 99.94,
+      "severity": "MEDIUM",
+      "risk_level": "\u2605\u2605\u2605\u2606\u2606 MEDIUM",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "MAX_IP_PKT_LEN",
+          "unscaled_value": 48.0,
+          "unit": "bytes",
+          "shap_contribution": 4.83,
+          "rationale": "Maximum packet size reached MTU limit (48 bytes) \u2014 consistent with bulk data dumping or large exploit payload transfer."
+        },
+        {
+          "rank": 2,
+          "feature": "MIN_IP_PKT_LEN",
+          "unscaled_value": 0.0,
+          "unit": "bytes",
+          "shap_contribution": 1.13,
+          "rationale": "Minimal header-only packet size (0 bytes) \u2014 indicates probe or ACK-less synchronization attempt."
+        },
+        {
+          "rank": 3,
+          "feature": "TCP_WIN_MAX_IN",
+          "unscaled_value": 4096.0,
+          "unit": "bytes",
+          "shap_contribution": 0.68,
+          "rationale": "TCP receive window abnormally expanded (4096 bytes) \u2014 indicates bulk encrypted payload delivery or data exfiltration burst."
+        }
+      ],
+      "recommended_actions": [
+        "[X] Add scanning source IP to automatic 24-hour firewall drop list.",
+        "[X] Verify perimeter port exposure and disable unused open ports (e.g., Telnet, SMB).",
+        "[X] Enable port-scan threshold alerting on local Network Intrusion Detection System.",
+        "[V] Correlate scanning IP against external Threat Intelligence feeds (AbuseIPDB, AlienVault)."
+      ]
+    },
+    {
+      "alert_id": "#ALT-20261102-009",
+      "timestamp": "2026-11-02 17:55:34",
+      "attack_type": "xss",
+      "threat_category": "Cross-Site Scripting (Client-Side Injection)",
+      "mitre_technique": "T1189 (Drive-by Compromise)",
+      "confidence_pct": 95.04,
+      "severity": "MEDIUM",
+      "risk_level": "\u2605\u2605\u2605\u2606\u2606 MEDIUM",
+      "primary_triggers": [
+        {
+          "rank": 1,
+          "feature": "MAX_IP_PKT_LEN",
+          "unscaled_value": 65.0,
+          "unit": "bytes",
+          "shap_contribution": 2.35,
+          "rationale": "Maximum packet size reached MTU limit (65 bytes) \u2014 consistent with bulk data dumping or large exploit payload transfer."
+        },
+        {
+          "rank": 2,
+          "feature": "SRC_TO_DST_AVG_THROUGHPUT",
+          "unscaled_value": 520000.0,
+          "unit": "bps",
+          "shap_contribution": 0.91,
+          "rationale": "Elevated outbound throughput (520,000 bps) indicates volumetric exfiltration or intensive injection traffic."
+        },
+        {
+          "rank": 3,
+          "feature": "MIN_IP_PKT_LEN",
+          "unscaled_value": 65.0,
+          "unit": "bytes",
+          "shap_contribution": 0.74,
+          "rationale": "Abnormally elevated minimum packet length (65 bytes) \u2014 packets carry continuous payload with no bare ACKs."
+        }
+      ],
+      "recommended_actions": [
+        "[X] Invalidate active session tokens associated with vulnerable application paths.",
+        "[X] Implement HTML entity encoding and context-aware escaping on reflective form inputs.",
+        "[X] Enforce strict Content Security Policy (CSP) header: default-src 'self'.",
+        "[V] Inspect web application response payloads for reflected script fragments."
+      ]
+    }
+  ]
+}

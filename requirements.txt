@@ -8,4 +8,6 @@ matplotlib
 seaborn
 joblib
 requests
+imbalanced-learn
+torch
 
