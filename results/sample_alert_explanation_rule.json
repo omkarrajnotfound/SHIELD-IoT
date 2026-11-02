@@ -1,0 +1,9 @@
+{
+  "alert_type": "Intrusion / Malicious Attack Flagged",
+  "model_confidence": 0.9813021254331296,
+  "primary_trigger_features": [
+    "L7_PROTO (scaled=13.00, impact=+4.90)",
+    "TCP_FLAGS (scaled=-0.75, impact=+0.23)"
+  ],
+  "operator_summary": "Network flow flagged due to anomalous packet size distribution and protocol flags differing significantly from baseline normal profile."
+}

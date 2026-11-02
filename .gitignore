@@ -1,0 +1,31 @@
+# Python virtual environment - too large for GitHub
+venv/
+.venv/
+env/
+
+# Large dataset files - download separately via fetch_dataset.py
+data/nf_ton_iot_sample.csv
+data/*.csv
+data/processed/*.pkl
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+.Python
+
+# Model files - regenerate by running scripts
+models/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,11 @@
+numpy<2.0.0
+pandas
+scikit-learn
+lightgbm
+xgboost
+shap
+matplotlib
+seaborn
+joblib
+requests
+
