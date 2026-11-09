@@ -40,11 +40,26 @@ SHIELD-IoT/
 │   ├── cross_validate.py        # Phase C: 5-Fold Stratified Cross-Validation (801k flows)
 │   ├── evaluate_full.py         # Phase D: Full Evaluation Suite (AUC-ROC, FPR, CM Heatmap)
 │   ├── rule_engine.py           # Phase E: Automated SHAP-to-Rule Generator & SIEM Logs
+│   ├── train_openset_zeroday.py # Phase G: Open-Set Zero-Day Discovery & Energy OSR Engine
+│   ├── train_adversarial_defense.py # Advancement 1: Min-Max Adversarial Defense Training
+│   ├── adversarial_attack_benchmark.py # Advancement 1: RFC-Constrained Evasion Benchmark
+│   ├── cross_dataset_eval.py    # Advancement 2: Multi-Domain NetFlow Generalization
+│   ├── c_transpiler.py          # Phase H: Model-to-C Transpilation Engine
+│   ├── profile_edge.py          # Phase H: Hardware Profiling & Embedded Comparison
+│   ├── embedded/                # Phase H: Standalone C Engine & Benchmarking Harness
+│   │   ├── ids_model.h          # Standalone C Header Interface
+│   │   ├── ids_model.c          # 1,000 Transpiled Static Trees (0 Dynamic Allocations)
+│   │   └── benchmark_c.c        # Native C Microsecond Hardware Timer Harness
 │   ├── validate_phase_a.py      # Automated Verification Suite for Phase A
 │   ├── validate_phase_b.py      # Automated Verification Suite for Phase B
 │   ├── validate_phase_c.py      # Automated Verification Suite for Phase C
 │   ├── validate_phase_d.py      # Automated Verification Suite for Phase D
-│   └── validate_phase_e.py      # Automated Verification Suite for Phase E
+│   ├── validate_phase_e.py      # Automated Verification Suite for Phase E
+│   ├── validate_phase_g.py      # Automated Verification Suite for Phase G
+│   ├── validate_phase_h.py      # Automated Verification Suite for Phase H
+│   ├── validate_advancement_phase_1.py # Verification Suite for Advancement 1 (Adversarial)
+│   ├── validate_advancement_phase_2.py # Verification Suite for Advancement 2 (Cross-Dataset)
+│   └── validate_all_phases.py   # Unified Master Audit Suite (Phases A through H)
 │
 ├── figures/                     # Generated publication-ready graphs (300 DPI)
 │   ├── shap_feature_importance_top14.png
@@ -56,7 +71,12 @@ SHIELD-IoT/
 │   ├── master_comparison_chart.png
 │   ├── cross_validation_stability.png
 │   ├── auc_roc_curves.png
-│   └── confusion_matrix_heatmap.png
+│   ├── confusion_matrix_heatmap.png
+│   ├── zero_day_openset_auroc.png
+│   ├── energy_score_distribution.png
+│   ├── embedded_c_vs_python_profile.png
+│   ├── adversarial_perturbation_curve.png
+│   └── cross_dataset_generalization_radar.png
 │
 ├── results/                     # Evaluation metrics and reports
 │   ├── per_class_metrics.csv
@@ -65,6 +85,15 @@ SHIELD-IoT/
 │   ├── per_class_full_metrics.csv
 │   ├── evaluation_full_summary.json
 │   ├── phase_a_summary.json
+│   ├── zero_day_detection_metrics.csv
+│   ├── phase_g_summary.json
+│   ├── embedded_edge_profile_table.csv
+│   ├── phase_h_summary.json
+│   ├── adversarial_robustness_metrics.csv
+│   ├── phase_1_adversarial_summary.json
+│   ├── cross_dataset_transfer_matrix.csv
+│   ├── phase_2_cross_dataset_summary.json
+│   ├── master_validation_audit.json
 │   ├── sample_alert_report.txt
 │   └── batch_alert_summary.json
 │
@@ -162,9 +191,12 @@ python src/explainability.py
 | Phase C | 5-Fold Stratified Cross Validation (801k flows, ±0.13% Acc) | ✅ Done |
 | Phase D | Full Evaluation Suite (AUC-ROC 0.9925, FPR 1.81%, 10x10 CM) | ✅ Done |
 | Phase E | Automated Security Rule Engine (MITRE ATT&CK SIEM Logs) | ✅ Done |
-| Phase G | Open-Set Zero-Day Discovery Engine (Energy OSR AUROC) | 🔄 Planned |
-| Phase H | Bare-Metal C Synthesis & Microsecond Profiling (Zero-Dep) | 🔄 Planned |
-| Phase I | Final IEEE Conference Paper Manuscript Drafting | ⬜ Upcoming |
+| Phase G | Open-Set Zero-Day Discovery Engine (Energy OSR AUROC 96.26%) | ✅ Done |
+| Phase H | Bare-Metal C Synthesis & Microsecond Profiling (Zero-Dep) | ✅ Done |
+| Advancement 1 | Adversarial Evasion Robustness (RFC-Constrained Defense) | ✅ Done |
+| Advancement 2 | Cross-Dataset Domain Adaptation (NF-BoT-IoT & NF-UNSW-NB15) | ✅ Done |
+| Advancement 3 | Embedded ARM Cortex-M / ESP32 Memory Map Profiling | 🔄 Planned |
+| Phase I / F | Final IEEE Conference Paper Manuscript Drafting | ⬜ Upcoming |
 
 ---
 

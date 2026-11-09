@@ -1,0 +1,8 @@
+{
+  "total_samples": 160304,
+  "total_time_seconds": 2.210232,
+  "latency_us_per_flow": 13.7878,
+  "throughput_fps": 72528.14,
+  "accuracy_pct": 96.6270,
+  "peak_ram_kb": 14136
+}

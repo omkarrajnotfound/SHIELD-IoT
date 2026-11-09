@@ -7,6 +7,19 @@ env/
 data/nf_ton_iot_sample.csv
 data/*.csv
 data/processed/*.pkl
+data/cross_datasets/
+data/*.parquet
+*.parquet
+data/processed/*.bin
+
+# Compiled binaries and build artifacts
+*.o
+*.obj
+*.exe
+*.pdb
+src/embedded/*.o
+src/embedded/*.exe
+src/embedded/*.pdb
 
 # Python cache files
 __pycache__/

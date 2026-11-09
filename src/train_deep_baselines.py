@@ -216,8 +216,10 @@ def run_phase_b():
     X_tr_clipped = np.clip(X_train_df.values, -10.0, 10.0).astype(np.float32)
     X_te_clipped = np.clip(X_test_df.values, -10.0, 10.0).astype(np.float32)
 
-    # Stratified Subsample for standard training calibration (120,000 flows)
-    sub_idx = np.random.RandomState(42).choice(len(X_train_df), 120000, replace=False)
+    # Rigorous Stratified Subsample for baseline training calibration (150,000 flows)
+    # Using stratify=y_train ensures every minority class (Ransomware, MITM, Backdoor) retains exact proportional presence
+    from sklearn.model_selection import train_test_split
+    sub_idx, _ = train_test_split(np.arange(len(y_train)), train_size=150000, stratify=y_train, random_state=42)
     X_tr_sub_clip = X_tr_clipped[sub_idx]
     y_tr_sub = y_train.iloc[sub_idx].values
 

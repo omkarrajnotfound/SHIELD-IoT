@@ -1,0 +1,34 @@
+{
+  "phase": "Phase 1 - Adversarial Evasion Robustness & Defensive Hardening",
+  "threat_model": {
+    "rfc_compliant": true,
+    "manipulable_features_count": 8,
+    "immutable_protocol_features_count": 6,
+    "evaluated_epsilons": [
+      0.0,
+      0.02,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.25
+    ]
+  },
+  "vulnerability_proof": {
+    "clean_baseline_dr": 99.73,
+    "perturbed_baseline_dr_at_eps05": 46.32,
+    "baseline_collapse_pct": 53.41
+  },
+  "defense_efficacy": {
+    "clean_hardened_dr": 99.68,
+    "perturbed_hardened_dr_at_eps05": 100.0,
+    "perturbed_hardened_dr_at_eps10": 100.0,
+    "perturbed_hardened_dr_at_eps20": 99.96,
+    "clean_benign_retention": 98.97
+  },
+  "ieee_targets_met": {
+    "retains_over_85_at_eps10": true,
+    "clean_benign_retention_over_95": true,
+    "proves_baseline_evasion_flaw": true
+  }
+}

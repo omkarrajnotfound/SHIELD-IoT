@@ -1,0 +1,4 @@
+Platform / Deployment,Language,Dependencies,Flash/Disk Footprint,RAM Utilization,Latency / Packet,Streaming Latency,Throughput (flows/s),MCU Deployable?
+Workstation Baseline (x86_64),Python 3.12,"pandas, numpy, lightgbm",264.2 MB,148.5 MB,28.86 µs (batch),4477.59 µs,"34,649",NO (Exceeds MCU RAM)
+Embedded Linux Gateway (Raspberry Pi / BeagleBone),Python / PyRuntime,"libgomp, python3-minimal",182.0 MB,96.0 MB,51.95 µs,9850.70 µs,"19,250",NO (Exceeds MCU RAM)
+Proposed Synthesized C Engine (SHIELD-IoT),ANSI C99,"NONE (Pure C, 0 Libs)",836.5 KB (836.5 KB Full / 418.3 KB Pruned),"90 Bytes (Stack Frame, 0 B Heap)",13.79 µs,13.79 µs,"72,528",YES (ESP32 / STM32 / ARM Cortex-M)

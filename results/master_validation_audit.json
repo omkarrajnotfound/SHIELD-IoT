@@ -1,0 +1,106 @@
+{
+  "timestamp": "2026-11-09 17:17:12",
+  "total_phases_audited": 12,
+  "phases_passed": 12,
+  "total_checks_audited": 60,
+  "checks_passed": 60,
+  "overall_status": "all configured artifact checks passed",
+  "phase_breakdown": [
+    {
+      "phase": "Phase A: Rare Attack Mitigation (Borderline-SMOTE)",
+      "script": "src/validate_phase_a.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 3.77
+    },
+    {
+      "phase": "Phase B: Deep Learning Baselines (MLP + 1D-CNN)",
+      "script": "src/validate_phase_b.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 6.72
+    },
+    {
+      "phase": "Phase C: 5-Fold Stratified Cross-Validation (801k flows)",
+      "script": "src/validate_phase_c.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 0.82
+    },
+    {
+      "phase": "Phase D: Full Evaluation Suite (AUC-ROC, FPR, CM)",
+      "script": "src/validate_phase_d.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 4.45
+    },
+    {
+      "phase": "Phase E: Automated Security Rule Engine (TreeSHAP & SIEM)",
+      "script": "src/validate_phase_e.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 0.05
+    },
+    {
+      "phase": "Phase G: Open-Set Zero-Day Discovery Engine (Energy OSR)",
+      "script": "src/validate_phase_g.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 3.29
+    },
+    {
+      "phase": "Phase H: Bare-Metal ANSI C Synthesis & Embedded Profiling",
+      "script": "src/validate_phase_h.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 0.67
+    },
+    {
+      "phase": "Advancement 1: Adversarial Evasion Robustness (PGD Defense)",
+      "script": "src/validate_advancement_phase_1.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 0.62
+    },
+    {
+      "phase": "Advancement 2: Cross-Dataset Domain Adaptation (BoT-IoT/UNSW)",
+      "script": "src/validate_advancement_phase_2.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 0.7
+    },
+    {
+      "phase": "Advancement 3: Bare-Metal MCU Hardware Mapping (M4/ESP32)",
+      "script": "src/validate_advancement_phase_3.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 0.53
+    },
+    {
+      "phase": "Phase 5: Feature Ablation Study (39 vs 14 Feats)",
+      "script": "src/validate_phase_5_ablation.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 0.57
+    },
+    {
+      "phase": "Phase 8: Final Consistency & Integrity Audit",
+      "script": "src/validate_final_consistency.py",
+      "status": "PASSED",
+      "checks_passed": 5,
+      "total_checks": 5,
+      "duration_seconds": 0.55
+    }
+  ]
+}

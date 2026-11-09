@@ -1,0 +1,5 @@
+configuration,feature_count,defense_resampling,class_weighting,accuracy,macro_f1,weighted_f1,ransomware_recall,backdoor_recall,mitm_recall,train_time_sec,latency_ms_per_1k
+39 Features (Standard Unweighted),39,None (Original Imbalanced),None (Uniform),80.86,57.8,81.36,0.0,97.52,1.47,18.37,12.332
+14 Features (Standard Unweighted),14,None (Original Imbalanced),None (Uniform),91.74,61.59,92.05,5.71,0.0,1.47,13.78,9.023
+39 Features (Hardened Defense),39,Borderline-SMOTE,Cost-Sensitive (Balanced),96.87,87.64,96.91,88.57,98.76,33.82,17.11,8.909
+14 Features (Hardened SHIELD-IoT),14,Borderline-SMOTE,Cost-Sensitive (Balanced),96.63,85.53,96.75,85.71,97.52,32.35,17.28,9.081

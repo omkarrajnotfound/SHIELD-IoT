@@ -1,0 +1,86 @@
+{
+  "study": "Controlled 39-Feature vs. 14-Feature Ablation",
+  "dataset": "NF-ToN-IoT-v2",
+  "total_training_flows": 641215,
+  "total_testing_flows": 160304,
+  "configurations": [
+    {
+      "configuration": "39 Features (Standard Unweighted)",
+      "feature_count": 39,
+      "defense_resampling": "None (Original Imbalanced)",
+      "class_weighting": "None (Uniform)",
+      "accuracy": 80.86,
+      "macro_f1": 57.8,
+      "weighted_f1": 81.36,
+      "ransomware_recall": 0.0,
+      "backdoor_recall": 97.52,
+      "mitm_recall": 1.47,
+      "train_time_sec": 18.37,
+      "latency_ms_per_1k": 12.332
+    },
+    {
+      "configuration": "14 Features (Standard Unweighted)",
+      "feature_count": 14,
+      "defense_resampling": "None (Original Imbalanced)",
+      "class_weighting": "None (Uniform)",
+      "accuracy": 91.74,
+      "macro_f1": 61.59,
+      "weighted_f1": 92.05,
+      "ransomware_recall": 5.71,
+      "backdoor_recall": 0.0,
+      "mitm_recall": 1.47,
+      "train_time_sec": 13.78,
+      "latency_ms_per_1k": 9.023
+    },
+    {
+      "configuration": "39 Features (Hardened Defense)",
+      "feature_count": 39,
+      "defense_resampling": "Borderline-SMOTE",
+      "class_weighting": "Cost-Sensitive (Balanced)",
+      "accuracy": 96.87,
+      "macro_f1": 87.64,
+      "weighted_f1": 96.91,
+      "ransomware_recall": 88.57,
+      "backdoor_recall": 98.76,
+      "mitm_recall": 33.82,
+      "train_time_sec": 17.11,
+      "latency_ms_per_1k": 8.909
+    },
+    {
+      "configuration": "14 Features (Hardened SHIELD-IoT)",
+      "feature_count": 14,
+      "defense_resampling": "Borderline-SMOTE",
+      "class_weighting": "Cost-Sensitive (Balanced)",
+      "accuracy": 96.63,
+      "macro_f1": 85.53,
+      "weighted_f1": 96.75,
+      "ransomware_recall": 85.71,
+      "backdoor_recall": 97.52,
+      "mitm_recall": 32.35,
+      "train_time_sec": 17.28,
+      "latency_ms_per_1k": 9.081
+    }
+  ],
+  "delta_analysis": {
+    "feature_reduction_under_standard": {
+      "accuracy_delta": 10.88,
+      "macro_f1_delta": 3.79,
+      "feature_compression_pct": 64.1
+    },
+    "feature_reduction_under_hardened": {
+      "accuracy_delta": -0.24,
+      "macro_f1_delta": -2.11,
+      "weighted_f1_delta": -0.16,
+      "ransomware_recall_delta": -2.86,
+      "backdoor_recall_delta": -1.24,
+      "mitm_recall_delta": -1.47,
+      "latency_reduction_pct": -1.9
+    },
+    "defense_gain_on_14_features": {
+      "accuracy_gain": 4.89,
+      "macro_f1_gain": 23.94,
+      "backdoor_recall_gain": 97.52,
+      "mitm_recall_gain": 30.88
+    }
+  }
+}

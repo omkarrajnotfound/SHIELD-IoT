@@ -1,11 +1,21 @@
 """
-Phase C: 5-Fold Stratified Cross Validation
+Phase C: 5-Fold Stratified Cross Validation (Strictly Leakage-Free)
 Validates the statistical stability and generalizability of Our Proposed
-14-Feature Stealth-Aware LightGBM (Borderline-SMOTE + Cost-Sensitive)
-across the full 801,519 NF-ToN-IoT-v2 dataset.
+Two-Stage Feature Selection (ANOVA + TreeSHAP) and Stealth-Aware LightGBM
+(Borderline-SMOTE + Cost-Sensitive) across the full 801,519 NF-ToN-IoT-v2 dataset.
+
+Key Integrity Protocol:
+  - Strict In-Fold Feature Selection: Both Stage-1 ANOVA filtering (39 -> 22)
+    and Stage-2 TreeSHAP ranking (22 -> 14) are fit exclusively inside each
+    training fold using only that fold's training samples.
+  - Strict In-Fold Resampling: Borderline-SMOTE is fit exclusively on the
+    training fold's selected features, with zero validation exposure.
+  - Out-of-Fold Validation: Validation folds are evaluated on the fold-specific
+    selected 14 features without any prior label exposure.
 
 Outputs:
   - results/cross_validation_results.csv
+  - results/cross_validation_fold_features.json
   - figures/cross_validation_stability.png
 """
 import os
@@ -17,6 +27,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import StratifiedKFold
+from sklearn.feature_selection import f_classif
 from sklearn.metrics import accuracy_score, f1_score, classification_report
 from lightgbm import LGBMClassifier
 from imblearn.over_sampling import BorderlineSMOTE
@@ -32,33 +43,30 @@ os.makedirs(FIGURES_DIR, exist_ok=True)
 
 def run_cross_validation(n_splits=5):
     print("=" * 80)
-    print("PHASE C: 5-FOLD STRATIFIED CROSS VALIDATION (STATISTICAL RIGOR)")
+    print("PHASE C: 5-FOLD STRATIFIED CROSS VALIDATION (STRICTLY LEAKAGE-FREE)")
     print("=" * 80)
 
-    # 1. Load Data, Targets, Encoder & Selected 14 Features
+    # 1. Load Data, Targets & Label Encoder (Full 39 Features)
     data_path = os.path.join(PROCESSED_DIR, "train_test_data.pkl")
     target_path = os.path.join(PROCESSED_DIR, "train_test_multi_targets.pkl")
     encoder_path = os.path.join(PROCESSED_DIR, "label_encoder_multi.pkl")
-    features_path = os.path.join(PROCESSED_DIR, "selected_features.json")
 
-    print("[Step C1] Loading complete dataset and 14 selected features...")
+    print("[Step C1] Loading complete benchmark dataset (39 features)...")
     X_train_df, X_test_df, _, _ = joblib.load(data_path)
     y_train_s, y_test_s = joblib.load(target_path)
     label_encoder = joblib.load(encoder_path)
     classes = list(label_encoder.classes_)
+    benign_idx = classes.index("Benign")
 
-    with open(features_path, "r", encoding="utf-8") as f:
-        selected_features = json.load(f)["final_features"]
-
-    # Combine into full 801,519 dataset with 14 features
-    X_full = pd.concat([X_train_df[selected_features], X_test_df[selected_features]], axis=0).reset_index(drop=True)
+    # Combine into full 801,519 dataset with ALL 39 NetFlow features
+    X_full = pd.concat([X_train_df, X_test_df], axis=0).reset_index(drop=True)
     y_full = pd.concat([y_train_s, y_test_s], axis=0).reset_index(drop=True)
 
     print(f"  Total Benchmark Records: {len(X_full):,} network flows")
-    print(f"  Feature Dimension:       {X_full.shape[1]} features")
+    print(f"  Initial Feature Dimension: {X_full.shape[1]} features (pre-selection)")
     print(f"  Class Categories:        {len(classes)} ({', '.join(classes[:5])}...)")
 
-    # Indices of minority classes
+    # Indices of minority classes for in-fold SMOTE
     idx_backdoor = classes.index("backdoor")
     idx_mitm = classes.index("mitm")
     idx_ransomware = classes.index("ransomware")
@@ -71,9 +79,10 @@ def run_cross_validation(n_splits=5):
 
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
     fold_metrics = []
+    fold_features_record = {}
 
     print("\n" + "-" * 80)
-    print(f"Executing {n_splits}-Fold Stratified Cross Validation...")
+    print(f"Executing {n_splits}-Fold Stratified Cross Validation with In-Fold Feature Selection...")
     print("-" * 80)
 
     total_cv_start = time.time()
@@ -87,13 +96,56 @@ def run_cross_validation(n_splits=5):
         y_val = y_full.iloc[val_idx]
 
         print(f"  Training partition:   {len(X_tr):,} flows | Validation: {len(X_val):,} flows")
+
+        # -----------------------------------------------------------------
+        # Step A: Strictly In-Fold Two-Stage Feature Selection (Zero Leakage)
+        # -----------------------------------------------------------------
+        t0_fs = time.time()
+        print(f"  Executing In-Fold Two-Stage Feature Selection (39 -> 22 -> 14 features)...")
+        y_tr_bin = (y_tr != benign_idx).astype(int)
+
+        # 50,000-sample representative slice of this fold's training data
+        rng = np.random.RandomState(42 + fold)
+        sub_idx = rng.choice(len(X_tr), min(50000, len(X_tr)), replace=False)
+        X_sub = X_tr.iloc[sub_idx]
+        y_sub_bin = y_tr_bin.iloc[sub_idx]
+
+        # Stage 1: ANOVA F-test statistical filter (39 -> 22)
+        f_vals, _ = f_classif(np.clip(X_sub.values, -1e4, 1e4), y_sub_bin.values)
+        f_vals = np.nan_to_num(f_vals, nan=0.0)
+        s1_features = X_tr.columns[np.argsort(-f_vals)[:22]].tolist()
+
+        # Stage 2: TreeSHAP attribution ranking (22 -> 14)
+        clf_fs = LGBMClassifier(
+            n_estimators=60,
+            max_depth=5,
+            learning_rate=0.1,
+            random_state=42 + fold,
+            n_jobs=-1,
+            verbose=-1
+        )
+        clf_fs.fit(X_sub[s1_features], y_sub_bin)
+        shap_contribs = clf_fs.booster_.predict(X_sub[s1_features].iloc[:5000], pred_contrib=True)[:, :-1]
+        mean_abs_shap = np.mean(np.abs(shap_contribs), axis=0)
+        fold_selected_features = [s1_features[i] for i in np.argsort(-mean_abs_shap)[:14]]
+        fs_time = time.time() - t0_fs
+
+        fold_features_record[f"Fold_{fold}"] = fold_selected_features
+        print(f"  Feature Selection completed in {fs_time:.2f}s: {len(fold_selected_features)} features selected")
+
+        # -----------------------------------------------------------------
+        # Step B: Strictly In-Fold Borderline-SMOTE Resampling
+        # -----------------------------------------------------------------
         print(f"  Applying Borderline-SMOTE strictly to training fold (zero-leakage)...")
         t0_smote = time.time()
         bsmote = BorderlineSMOTE(sampling_strategy=oversample_strategy, random_state=42 + fold)
-        X_tr_res, y_tr_res = bsmote.fit_resample(X_tr, y_tr)
+        X_tr_res, y_tr_res = bsmote.fit_resample(X_tr[fold_selected_features], y_tr)
         smote_time = time.time() - t0_smote
         print(f"  SMOTE completed in {smote_time:.2f}s (New train size: {len(X_tr_res):,} flows)")
 
+        # -----------------------------------------------------------------
+        # Step C: In-Fold Model Training (Cost-Sensitive LightGBM)
+        # -----------------------------------------------------------------
         print(f"  Training Cost-Sensitive LightGBM (class_weight='balanced')...")
         t0_fit = time.time()
         lgb = LGBMClassifier(
@@ -107,10 +159,13 @@ def run_cross_validation(n_splits=5):
         )
         lgb.fit(X_tr_res, y_tr_res)
         fit_time = time.time() - t0_fit
+        print(f"  Model fitting completed in {fit_time:.2f}s")
 
-        # Predict on pure validation fold
+        # -----------------------------------------------------------------
+        # Step D: Out-of-Fold Validation on Unseen Partition
+        # -----------------------------------------------------------------
         t0_pred = time.time()
-        y_pred = lgb.predict(X_val)
+        y_pred = lgb.predict(X_val[fold_selected_features])
         pred_time = time.time() - t0_pred
         latency_1k = (pred_time / len(X_val)) * 1000 * 1000
 
@@ -173,11 +228,17 @@ def run_cross_validation(n_splits=5):
     df_full.to_csv(csv_path, index=False)
     print(f"\nSaved cross validation results to: {csv_path}")
 
+    # Save fold feature selections JSON
+    feat_json_path = os.path.join(RESULTS_DIR, "cross_validation_fold_features.json")
+    with open(feat_json_path, "w", encoding="utf-8") as f:
+        json.dump(fold_features_record, f, indent=2)
+    print(f"Saved fold-specific feature lists to: {feat_json_path}")
+
     # Display clean table
     print("\n" + "=" * 105)
-    print("5-FOLD STRATIFIED CROSS VALIDATION STATISTICAL SUMMARY")
+    print("5-FOLD STRATIFIED CROSS VALIDATION STATISTICAL SUMMARY (LEAKAGE-FREE)")
     print("=" * 105)
-    disp_cols = ["fold", "accuracy", "macro_f1", "ransomware_recall", "backdoor_recall", "benign_recall", "ddos_recall", "latency_ms_per_1k"]
+    disp_cols = ["fold", "accuracy", "macro_f1", "ransomware_recall", "backdoor_recall", "mitm_recall", "benign_recall", "ddos_recall", "latency_ms_per_1k"]
     print(df_full[disp_cols].to_string(index=False))
     print("=" * 105)
 
@@ -186,6 +247,7 @@ def run_cross_validation(n_splits=5):
     print(f"  Macro-F1 Score:    {mean_row['macro_f1']:.2f}% ± {std_row['macro_f1']:.2f}%")
     print(f"  Ransomware Recall: {mean_row['ransomware_recall']:.2f}% ± {std_row['ransomware_recall']:.2f}%")
     print(f"  Backdoor Recall:   {mean_row['backdoor_recall']:.2f}% ± {std_row['backdoor_recall']:.2f}%")
+    print(f"  MITM Recall:       {mean_row['mitm_recall']:.2f}% ± {std_row['mitm_recall']:.2f}%")
 
     # Generate Chart
     chart_path = os.path.join(FIGURES_DIR, "cross_validation_stability.png")

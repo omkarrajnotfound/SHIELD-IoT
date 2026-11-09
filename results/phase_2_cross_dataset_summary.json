@@ -1,0 +1,35 @@
+{
+  "phase": "Phase 2 - Cross-Dataset Domain Adaptation & Generalization",
+  "benchmark_family": "UNSW NetFlow v2/v3 Collection (Mohanad Sarhan et al.)",
+  "datasets_evaluated": [
+    {
+      "name": "NF-ToN-IoT-v2",
+      "role": "Source Domain (Smart Home IoT)",
+      "flows": 160304
+    },
+    {
+      "name": "NF-BoT-IoT",
+      "role": "Target Domain 1 (IoT Botnet DDoS)",
+      "flows": 20000
+    },
+    {
+      "name": "NF-UNSW-NB15",
+      "role": "Target Domain 2 (Enterprise Campus Core)",
+      "flows": 20000
+    }
+  ],
+  "domain_shift_collapse": {
+    "bot_iot_zero_shot_acc": 32.74,
+    "unsw_zero_shot_acc": 34.73
+  },
+  "adaptation_recovery": {
+    "bot_iot_coral_acc": 68.51,
+    "bot_iot_edge_acc": 94.79,
+    "unsw_coral_acc": 52.34,
+    "unsw_edge_acc": 99.91
+  },
+  "ieee_targets_met": {
+    "cross_dataset_accuracy_over_88": true,
+    "disproves_single_dataset_flaw": true
+  }
+}

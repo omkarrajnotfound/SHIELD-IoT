@@ -1,0 +1,7 @@
+Platform Name,Microcontroller Core,ISA Architecture,Flash Capacity (KB),SRAM Capacity (KB),Operating Voltage (V),Active Run Current (mA),Power Dissipation (mW),Flash ROM Consumed (KB),Flash ROM Utilization (%),Static SRAM Consumed (KB),Peak Stack Frame (Bytes),Stack Frame Utilization (%),Estimated Clock Cycles / Flow,Inference Latency (us),Throughput (flows/sec),Energy per Flow (uJ),Battery Lifetime 1000mAh (M Flows)
+STM32F405RG (Full Ensemble),ARM Cortex-M4 (84 MHz),ARMv7E-M Thumb-2,1024,128,3.3,12.0,39.6,836.54,81.69,0.0,88,1.07,22100,263.1,3801,10.419,1.28
+STM32F401RE (Compact 500-Tree),ARM Cortex-M4 (84 MHz),ARMv7E-M Thumb-2,512,96,3.3,12.0,39.6,418.27,81.69,0.0,88,1.07,11050,131.55,7602,5.209,2.56
+Espressif ESP32-WROOM,Xtensa Dual-Core LX6 (160 MHz),Xtensa 32-bit RISC,4096,520,3.3,35.0,115.5,936.92,22.87,0.0,96,1.17,22000,137.5,7273,15.881,0.84
+Espressif ESP32-C3,RISC-V 32-bit RV32IMC (160 MHz),RISC-V 32-bit,4096,400,3.3,20.0,66.0,1070.25,26.13,0.0,96,1.17,25600,160.0,6250,10.56,1.26
+Nordic nRF52840 (BLE SoC),ARM Cortex-M4F (64 MHz),ARMv7E-M Thumb-2,1024,256,3.0,4.8,14.4,836.54,81.69,0.0,88,1.07,22100,345.31,2896,4.972,2.68
+Raspberry Pi RP2040,Dual ARM Cortex-M0+ (133 MHz),ARMv6-M Thumb,2048,264,3.3,18.0,59.4,741.81,36.22,0.0,88,1.07,29200,219.55,4555,13.041,1.02

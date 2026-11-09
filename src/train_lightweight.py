@@ -161,4 +161,10 @@ def plot_comparisons(df):
 
 if __name__ == "__main__":
     run_comparative_benchmark()
+    # Execute rigorous controlled 39 vs 14 feature ablation
+    try:
+        from feature_ablation import run_ablation
+    except ImportError:
+        from src.feature_ablation import run_ablation
+    run_ablation()
 

@@ -1,0 +1,29 @@
+{
+  "phase": "Phase H - Bare-Metal ANSI C Model Synthesis & Embedded Profiling",
+  "c_transpilation": {
+    "source_file": "src/embedded/ids_model.c",
+    "header_file": "src/embedded/ids_model.h",
+    "total_trees_compiled": 1000,
+    "classes": 10,
+    "features": 14,
+    "dynamic_allocations_bytes": 0,
+    "flash_footprint_kb": 836.5,
+    "static_ram_footprint_kb": 0.1
+  },
+  "benchmark_results": {
+    "test_flows_evaluated": 160304,
+    "accuracy_pct": 96.63,
+    "c_latency_us_per_packet": 13.788,
+    "c_throughput_fps": 72528.1,
+    "python_streaming_latency_us": 4477.59,
+    "python_batch_latency_us": 28.86,
+    "speedup_vs_python_streaming": 324.8,
+    "speedup_vs_python_batch": 2.1
+  },
+  "embedded_feasibility": {
+    "arm_cortex_m4_compatible": true,
+    "esp32_compatible": true,
+    "stm32_compatible": true,
+    "zero_dependencies": true
+  }
+}

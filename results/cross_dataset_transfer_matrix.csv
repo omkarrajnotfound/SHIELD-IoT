@@ -1,0 +1,8 @@
+Dataset,Domain Role,Adaptation Method,Accuracy (%),Attack Recall (%),Precision (%),F1-Score (%)
+NF-ToN-IoT-v2 (Source Domain),Source,Native In-Domain,99.17,99.73,98.98,99.36
+NF-BoT-IoT (IoT Botnet DDoS),Target 1,Naive Zero-Shot (No Adaptation),32.74,28.16,31.0,29.51
+NF-BoT-IoT (IoT Botnet DDoS),Target 1,Unsupervised CORAL Alignment,68.51,48.0,81.38,60.38
+NF-BoT-IoT (IoT Botnet DDoS),Target 1,Rapid Few-Shot Calibration (200 Pkts),94.79,93.04,96.42,94.7
+NF-UNSW-NB15 (Enterprise Core),Target 2,Naive Zero-Shot (No Adaptation),34.73,3.44,9.19,5.01
+NF-UNSW-NB15 (Enterprise Core),Target 2,Unsupervised CORAL Alignment,52.34,14.72,59.45,23.6
+NF-UNSW-NB15 (Enterprise Core),Target 2,Rapid Few-Shot Calibration (200 Pkts),99.91,99.83,99.99,99.91
