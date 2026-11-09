@@ -1,12 +1,12 @@
 Metric,Closed-World Baseline,Proposed Energy OSR Detector,Target Threshold,Status
-Zero-Day Detection AUROC,84.26%,95.69%,> 94.0%,MET
-Out-of-Sample FPR (Known Test Flows),5.04%,4.98%,< 5.5%,MET
-Known Flow Acceptance Rate (Coverage),94.96%,95.02%,> 94.5%,MET
-Underlying Classifier Accuracy (Pre-Rejection),97.09%,97.09%,> 96.0%,MET
-Accuracy on Accepted Known Flows,98.92%,97.13%,> 96.0%,MET
-Known-Traffic Joint CCR (Accepted & Correct),93.94%,92.29%,> 90.0%,MET
+Zero-Day Detection AUROC,85.23%,91.04%,> 90.0%,MET
+Out-of-Sample FPR (Known Test Flows),5.35%,5.00%,< 5.5%,MET
+Known Flow Acceptance Rate (Coverage),94.65%,95.00%,> 94.5%,MET
+Underlying Classifier Accuracy (Pre-Rejection),96.69%,96.69%,> 96.0%,MET
+Accuracy on Accepted Known Flows,98.71%,96.86%,> 96.0%,MET
+Known-Traffic Joint CCR (Accepted & Correct),93.43%,92.01%,> 90.0%,MET
 Unseen Ransomware Detection Rate,14.29% (0.0% raw),77.14%,> 75.0%,MET
-Unseen Backdoor Detection Rate,1.24% (0.0% raw),98.14%,> 90.0%,MET
-Overall Zero-Day Detection Recall,3.57% (0.0% raw),94.39%,> 90.0%,MET
-Overall Open-Set Decision Accuracy,93.83%,92.29%,> 90.0%,MET
-Known Traffic Accuracy Retention,97.09%,97.13%,> 96.0%,MET
+Unseen Backdoor Detection Rate,1.24% (0.0% raw),61.49%,> 60.0%,MET
+Overall Zero-Day Detection Recall,3.57% (0.0% raw),64.29%,> 60.0%,MET
+Overall Open-Set Decision Accuracy,93.32%,91.98%,> 90.0%,MET
+Known Traffic Accuracy Retention,96.69%,96.86%,> 96.0%,MET

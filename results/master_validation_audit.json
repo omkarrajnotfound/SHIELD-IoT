@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-09 17:17:12",
+  "timestamp": "2026-11-09 18:11:20",
   "total_phases_audited": 12,
   "phases_passed": 12,
   "total_checks_audited": 60,
@@ -12,7 +12,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 3.77
+      "duration_seconds": 3.61
     },
     {
       "phase": "Phase B: Deep Learning Baselines (MLP + 1D-CNN)",
@@ -20,7 +20,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 6.72
+      "duration_seconds": 6.62
     },
     {
       "phase": "Phase C: 5-Fold Stratified Cross-Validation (801k flows)",
@@ -28,7 +28,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 0.82
+      "duration_seconds": 0.67
     },
     {
       "phase": "Phase D: Full Evaluation Suite (AUC-ROC, FPR, CM)",
@@ -36,7 +36,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 4.45
+      "duration_seconds": 3.94
     },
     {
       "phase": "Phase E: Automated Security Rule Engine (TreeSHAP & SIEM)",
@@ -44,7 +44,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 0.05
+      "duration_seconds": 0.09
     },
     {
       "phase": "Phase G: Open-Set Zero-Day Discovery Engine (Energy OSR)",
@@ -52,7 +52,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 3.29
+      "duration_seconds": 4.68
     },
     {
       "phase": "Phase H: Bare-Metal ANSI C Synthesis & Embedded Profiling",
@@ -60,7 +60,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 0.67
+      "duration_seconds": 0.66
     },
     {
       "phase": "Advancement 1: Adversarial Evasion Robustness (PGD Defense)",
@@ -68,7 +68,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 0.62
+      "duration_seconds": 0.68
     },
     {
       "phase": "Advancement 2: Cross-Dataset Domain Adaptation (BoT-IoT/UNSW)",
@@ -76,7 +76,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 0.7
+      "duration_seconds": 0.81
     },
     {
       "phase": "Advancement 3: Bare-Metal MCU Hardware Mapping (M4/ESP32)",
@@ -84,7 +84,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 0.53
+      "duration_seconds": 0.69
     },
     {
       "phase": "Phase 5: Feature Ablation Study (39 vs 14 Feats)",
@@ -92,7 +92,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 0.57
+      "duration_seconds": 0.68
     },
     {
       "phase": "Phase 8: Final Consistency & Integrity Audit",
@@ -100,7 +100,7 @@
       "status": "PASSED",
       "checks_passed": 5,
       "total_checks": 5,
-      "duration_seconds": 0.55
+      "duration_seconds": 0.69
     }
   ]
 }

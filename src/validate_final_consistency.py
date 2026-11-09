@@ -40,7 +40,7 @@ def validate_final_consistency():
         "TABLE I: Master Comparative Benchmark",
         "TABLE II: Granular Per-Class Performance Breakdown",
         "TABLE III: Controlled Feature and Defense Ablation Study",
-        "TABLE IV: Strictly Leakage-Free 5-Fold Stratified Cross Validation Results",
+        "TABLE IV: Fold-Specific 5-Fold Stratified Cross Validation Results",
         "TABLE V: Host Workstation Runtime Profile",
         "TABLE VI: Cross-Compiled Static Memory Profiles",
         "TABLE VII: Open-Set Zero-Day Detection Metrics",
@@ -106,15 +106,15 @@ def validate_final_consistency():
     # Cross-Validation Table (Table IV)
     df_cv = pd.read_csv(os.path.join(RESULTS_DIR, "cross_validation_results.csv"))
     cv_mean = df_cv[df_cv["fold"] == "MEAN"].iloc[0]
-    assert "96.78" in paper_text and "86.56" in paper_text and "96.87" in paper_text
+    assert str(cv_mean["accuracy"]) in paper_text and str(cv_mean["macro_f1"]) in paper_text and str(cv_mean["weighted_f1"]) in paper_text
 
     # OSR Table (Table VII)
     with open(os.path.join(RESULTS_DIR, "phase_g_summary.json"), "r") as f:
         osr_data = json.load(f)
-    assert "95.69" in paper_text, "OSR AUROC 95.69 missing"
-    assert "4.98" in paper_text, "OSR FPR 4.98 missing"
-    assert "92.29" in paper_text, "OSR CCR 92.29 missing"
-    assert "1.0062" in paper_text, "OSR threshold 1.0062 missing"
+    assert str(osr_data["performance"]["proposed_osr_auroc"]) in paper_text, "OSR AUROC missing"
+    assert str(osr_data["performance"]["fpr_at_95"]) in paper_text, "OSR FPR missing"
+    assert str(osr_data["performance"]["known_traffic_metrics"]["classification_cum_rejection_rate"]) in paper_text, "OSR CCR missing"
+    assert str(osr_data["performance"]["tau_ood_threshold"]) in paper_text, "OSR threshold missing"
 
     # Edge Profile Table (Table V & VI)
     with open(os.path.join(RESULTS_DIR, "c_benchmark_results.json"), "r") as f:

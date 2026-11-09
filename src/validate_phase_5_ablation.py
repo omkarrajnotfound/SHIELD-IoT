@@ -107,7 +107,7 @@ def validate_phase_5():
     assert "*Fig. 5. Controlled ablation isolating the empirical impact of feature selection" in paper_text, "Missing Fig. 5 caption"
     assert "-0.24" in paper_text and "-2.11" in paper_text and "-0.16" in paper_text, "Missing delta numbers in paper text"
     assert "96.87" in paper_text and "87.64" in paper_text, "Missing 39-feat hardened metrics in paper"
-    assert "TABLE IV: Strictly Leakage-Free 5-Fold Stratified Cross Validation Results" in paper_text, "TABLE IV misnumbered"
+    assert "TABLE IV: Fold-Specific 5-Fold Stratified Cross Validation Results" in paper_text, "TABLE IV misnumbered"
     assert "TABLE V: Host Workstation Runtime Profile" in paper_text, "TABLE V misnumbered"
     assert "TABLE VI: Cross-Compiled Static Memory Profiles" in paper_text, "TABLE VI misnumbered"
     assert "TABLE VII: Open-Set Zero-Day Detection Metrics" in paper_text, "TABLE VII misnumbered"

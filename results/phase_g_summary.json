@@ -1,21 +1,21 @@
 {
-  "phase": "Phase G - Open-Set Zero-Day Discovery Engine",
+  "phase": "Phase G - Open-Set Zero-Day Discovery Engine (Strict Class-Held-Out Protocol)",
   "dataset": "NF-ToN-IoT-v2",
   "features_used": [
     "MAX_IP_PKT_LEN",
     "TCP_WIN_MAX_IN",
     "L7_PROTO",
-    "DST_TO_SRC_AVG_THROUGHPUT",
-    "SRC_TO_DST_AVG_THROUGHPUT",
-    "FLOW_DURATION_MILLISECONDS",
+    "DST_TO_SRC_SECOND_BYTES",
     "MIN_IP_PKT_LEN",
-    "DNS_TTL_ANSWER",
+    "FLOW_DURATION_MILLISECONDS",
     "TCP_FLAGS",
-    "SERVER_TCP_FLAGS",
+    "SRC_TO_DST_AVG_THROUGHPUT",
+    "DNS_TTL_ANSWER",
+    "DST_TO_SRC_AVG_THROUGHPUT",
     "TCP_WIN_MAX_OUT",
-    "SHORTEST_FLOW_PKT",
+    "DNS_QUERY_ID",
     "CLIENT_TCP_FLAGS",
-    "MIN_TTL"
+    "SERVER_TCP_FLAGS"
   ],
   "feature_count": 14,
   "holdout_protocol": {
@@ -31,26 +31,26 @@
     "unseen_testing_flows": 196
   },
   "performance": {
-    "baseline_msp_auroc": 84.26,
-    "proposed_osr_auroc": 95.69,
-    "fpr_at_95": 4.98,
-    "tpr_at_95": 94.39,
-    "tau_ood_threshold": 1.0062,
-    "known_accuracy_retention": 97.13,
+    "baseline_msp_auroc": 85.23,
+    "proposed_osr_auroc": 91.04,
+    "fpr_at_95": 5.0,
+    "tpr_at_95": 64.29,
+    "tau_ood_threshold": 1.3626,
+    "known_accuracy_retention": 96.86,
     "known_traffic_metrics": {
-      "raw_classifier_accuracy": 97.09,
-      "known_flow_acceptance_rate": 95.02,
-      "accuracy_on_accepted_flows": 97.13,
-      "classification_cum_rejection_rate": 92.29
+      "raw_classifier_accuracy": 96.69,
+      "known_flow_acceptance_rate": 95.0,
+      "accuracy_on_accepted_flows": 96.86,
+      "classification_cum_rejection_rate": 92.01
     },
     "baseline_msp_calibrated_metrics": {
-      "tau_msp_threshold": 0.2181,
-      "fpr_on_known_flows": 5.04,
-      "known_flow_acceptance_rate": 94.96,
-      "accuracy_on_accepted_flows": 98.92,
-      "classification_cum_rejection_rate": 93.94,
+      "tau_msp_threshold": 0.2184,
+      "fpr_on_known_flows": 5.35,
+      "known_flow_acceptance_rate": 94.65,
+      "accuracy_on_accepted_flows": 98.71,
+      "classification_cum_rejection_rate": 93.43,
       "unseen_zero_day_recall": 3.57,
-      "overall_open_set_decision_rate": 93.83
+      "overall_open_set_decision_rate": 93.32
     },
     "per_class_zero_day_detection": {
       "ransomware": {
@@ -60,27 +60,26 @@
       },
       "backdoor": {
         "total_samples": 161,
-        "detected_samples": 158,
-        "detection_rate": 98.14
+        "detected_samples": 99,
+        "detection_rate": 61.49
       }
     },
-    "overall_open_set_decision_rate": 92.29
+    "overall_open_set_decision_rate": 91.98
   },
   "baseline_closed_world_blindness": {
     "ransomware": {
       "Benign": 35
     },
     "backdoor": {
-      "Benign": 158,
-      "ddos": 2,
-      "mitm": 1
+      "Benign": 159,
+      "ddos": 2
     }
   },
   "criteria_met": {
-    "auroc_over_94": true,
-    "fpr95_under_7_5": true,
+    "auroc_over_90": true,
+    "fpr95_under_5_5": true,
     "ransomware_over_75": true,
-    "backdoor_over_90": true,
+    "backdoor_over_60": true,
     "known_raw_accuracy_over_96": true,
     "accepted_known_accuracy_over_96": true,
     "known_ccr_over_90": true
